@@ -8,7 +8,7 @@ public class Person {
 	//constructors
 	public Person() {
 		name = "unknown name";
-		maximumBooks = 8900; //yes and no
+		maximumBooks = 8900; //yes and no xxx
 	}
 	
 	// methods 
