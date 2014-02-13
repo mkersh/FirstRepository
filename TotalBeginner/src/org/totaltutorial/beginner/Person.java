@@ -10,6 +10,8 @@ public class Person {
 		name = "unknown name";
 		maximumBooks = 81900; //yes or no or maybe
 		// This line
+		// and this
+		// that
 	}
 	
 	// methods 
