@@ -31,4 +31,10 @@ public class Person {
 	public void setMaximumBooks(int maximumBooks) {
 		this.maximumBooks = maximumBooks;
 	}
-}
+	
+	public String toString(){
+		String str;
+		str = getName() + " (" + getMaximumBooks() + " books)";
+		return str;
+	}
+	}

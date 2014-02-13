@@ -1,5 +1,5 @@
-
-Person p = new Person();
-p.setName("Mark Kershaw");
-p.setMaximumBooks(10);
-p.getName();
+ArrayList<Book> list = new ArrayList<Book>();
+Book b1 = new Book("Greate Expect");Book b2 = new Book("War and peace");
+list.add(b1);
+list.add(b2);
+list
