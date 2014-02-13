@@ -11,12 +11,11 @@ public class Person {
 		maximumBooks = 81900; //yes or no or maybe
 		// This line
 		// and this
-		// that
 	}
 	
 	// methods 
 	public String getName() {
-		// here
+		// yyy
 		return name;
 	}
 	
