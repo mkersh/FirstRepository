@@ -25,6 +25,7 @@ public class Person {
 	}
 
 	public int getMaximumBooks() {
+		// and this
 		return maximumBooks;
 	}
 
