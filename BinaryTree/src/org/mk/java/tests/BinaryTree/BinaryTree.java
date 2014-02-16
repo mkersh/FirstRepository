@@ -87,17 +87,22 @@ class BinaryTreeNode {
 		if (this.data == null) {
 			// empty tree, store in this node
 			this.data = itemToAdd;
-			
-			// TODO - reuse nodes that are marked as isActive=false
+			this.isActive = true;
+			TRACE("Added " + itemToAdd);
+			return;
+			// TODO - reuse nodes that are markitemToAdded as isActive=false
 			// if we have an inactive node and itemToAdd is > left and < right then
 			// we can reuse the inactive node
 		}
-		else if (this.compareData(itemToAdd) == 0){
+		else if ((this.compareData(itemToAdd) == 0) && this.isActive == true){
 			// Throw an Exception
 			throw new Exception("Duplicate Item");
 		}
-		else if (this.compareData(itemToAdd) > 0){
+		
+		// See if we need to re-balance the tree
+		if (this.compareData(itemToAdd) > 0){
 			if ((leftCount - rightCount) > 1){
+				TRACE("Rebalance Left to right");
 				// Need to re-balance tree
 				String originalNodeData = this.data;
 				this.data = left.data; // Move the left node to be root node
@@ -105,11 +110,10 @@ class BinaryTreeNode {
 				this.left.isActive = false;
 				add(originalNodeData); // will get added to right side
 			}
-			if (this.left == null) this.left = new BinaryTreeNode();
-			this.left.add(itemToAdd);
 		}
 		else {
 			if ((rightCount - leftCount) > 1){
+				TRACE("Rebalance right to left");
 				// Need to re-balance tree
 				String originalNodeData = this.data;
 				this.data = right.data; // Move the left node to be root node
@@ -117,10 +121,23 @@ class BinaryTreeNode {
 				this.right.isActive = false;
 				add(originalNodeData); // will get added to left side
 			}
-			if (this.right == null) this.right = new BinaryTreeNode();
-			this.right.add(itemToAdd);
 		}
 		
+		// Now Add the new node
+		if (this.compareData(itemToAdd) > 0){
+			TRACE("Going Left - " + itemToAdd);
+			if (this.left == null) this.left = new BinaryTreeNode();
+			this.leftCount += 1;
+			this.left.add(itemToAdd);
+			
+		}
+		else {
+			TRACE("Going Right - " + itemToAdd);
+			if (this.right == null) this.right = new BinaryTreeNode();
+			this.rightCount += 1;
+			this.right.add(itemToAdd);
+			
+		}
 	}
 	
 	
@@ -129,18 +146,20 @@ class BinaryTreeNode {
 		String str = "";
 		if (this.left != null){
 			str += this.left.getTreeAsString(addDepth(depth,LEFT));
-			System.out.println("After left: " + str);
 		}
 		if (this.data != null){
 			str += depth + this.data + "\n";
-			System.out.println("Node: " + str);
 		}
 		if (this.right != null){
 			str += this.right.getTreeAsString(addDepth(depth,RIGHT));
-			System.out.println("After right: " + str);
 		}
 		
 		return str;
+	}
+	
+	private static void TRACE( String str)
+	{
+		System.out.println(str);
 	}
 	
 	private static String addDepth(String depthStr, int leftOrRight) {
