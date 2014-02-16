@@ -20,6 +20,7 @@ public class testBinaryTree {
 		bt.add("2");
 		bt.add("3");
 		bt.add("4");
+		bt.add("5");
 	}
 
 	@Test
