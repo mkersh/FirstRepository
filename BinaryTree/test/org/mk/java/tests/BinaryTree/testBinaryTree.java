@@ -37,7 +37,7 @@ public class testBinaryTree {
 	public void testToString() {
 		String btStr = "";
 		btStr += "<1\n";
-		btStr += "<>2\n";
+		btStr += "<>2\n"; 
 		btStr += "<>>3\n";
 		btStr += "<>>>4\n";
 		btStr += "10\n";
