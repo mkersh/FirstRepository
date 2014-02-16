@@ -2,7 +2,7 @@ package org.mk.java.tests.BinaryTree;
 
 /**
  * 
- * @author kershaw
+ * @author mkersh
  *
  * Class for storing data in a binary sorted tree.
  * To make things interesting I am going to try and balance the tree
@@ -45,6 +45,9 @@ class BinaryTreeNode {
 	private String data = null; 		// data for this node
 	private BinaryTreeNode left = null; 	// nodes less than this one
 	private BinaryTreeNode right = null; 	// nodes greater than this one.
+	private int leftCount = 0, rightCount = 0;
+	private boolean isActive = true; 
+	
 	private static final int LEFT = 1;
 	private static final int RIGHT = 2;
 
@@ -85,21 +88,42 @@ class BinaryTreeNode {
 			// empty tree, store in this node
 			this.data = itemToAdd;
 			
+			// TODO - reuse nodes that are marked as isActive=false
+			// if we have an inactive node and itemToAdd is > left and < right then
+			// we can reuse the inactive node
 		}
 		else if (this.compareData(itemToAdd) == 0){
 			// Throw an Exception
 			throw new Exception("Duplicate Item");
 		}
 		else if (this.compareData(itemToAdd) > 0){
+			if ((leftCount - rightCount) > 1){
+				// Need to re-balance tree
+				String originalNodeData = this.data;
+				this.data = left.data; // Move the left node to be root node
+				this.leftCount -= 1;
+				this.left.isActive = false;
+				add(originalNodeData); // will get added to right side
+			}
 			if (this.left == null) this.left = new BinaryTreeNode();
 			this.left.add(itemToAdd);
 		}
 		else {
+			if ((rightCount - leftCount) > 1){
+				// Need to re-balance tree
+				String originalNodeData = this.data;
+				this.data = right.data; // Move the left node to be root node
+				this.rightCount -= 1;
+				this.right.isActive = false;
+				add(originalNodeData); // will get added to left side
+			}
 			if (this.right == null) this.right = new BinaryTreeNode();
 			this.right.add(itemToAdd);
 		}
 		
 	}
+	
+	
 	
 	public String getTreeAsString(String depth){
 		String str = "";
