@@ -36,14 +36,14 @@ public class testBinaryTree {
 	@Test
 	public void testToString() {
 		String btStr = "";
-		btStr += "--1\n";
-		btStr += "---2\n";
-		btStr += "----3\n";
-		btStr += "-----4\n";
-		btStr += "-10\n";
-		btStr += "--20\n";
-		btStr += "---30\n";
-		btStr += "----40\n";
+		btStr += "<1\n";
+		btStr += "<>2\n";
+		btStr += "<>>3\n";
+		btStr += "<>>>4\n";
+		btStr += "10\n";
+		btStr += ">20\n";
+		btStr += ">>30\n";
+		btStr += ">>>40\n";
 		
 		assertEquals(btStr , bt.toString());
 	}

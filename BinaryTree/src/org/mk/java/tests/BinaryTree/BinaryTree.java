@@ -35,7 +35,7 @@ public class BinaryTree {
 	}
 	
 	public String toString(){
-		return rootNode.getTreeAsString(1);
+		return rootNode.getTreeAsString("");
 	}
 	
 
@@ -45,6 +45,8 @@ class BinaryTreeNode {
 	private String data = null; 		// data for this node
 	private BinaryTreeNode left = null; 	// nodes less than this one
 	private BinaryTreeNode right = null; 	// nodes greater than this one.
+	private static final int LEFT = 1;
+	private static final int RIGHT = 2;
 
 	//Constructors
 	public BinaryTreeNode(){}
@@ -99,25 +101,35 @@ class BinaryTreeNode {
 		
 	}
 	
-	public String getTreeAsString(int depth){
+	public String getTreeAsString(String depth){
 		String str = "";
 		if (this.left != null){
-			str += this.left.getTreeAsString(depth+1);
+			str += this.left.getTreeAsString(addDepth(depth,LEFT));
 			System.out.println("After left: " + str);
 		}
 		if (this.data != null){
-			str += padString("", depth, '-');
-			str += this.data + "\n";
+			str += depth + this.data + "\n";
 			System.out.println("Node: " + str);
 		}
 		if (this.right != null){
-			str += this.right.getTreeAsString(depth+1);
+			str += this.right.getTreeAsString(addDepth(depth,RIGHT));
 			System.out.println("After right: " + str);
 		}
 		
 		return str;
 	}
 	
+	private static String addDepth(String depthStr, int leftOrRight) {
+        if (leftOrRight == LEFT){
+        	depthStr += "<";
+        }
+        else if (leftOrRight == RIGHT) {
+        	depthStr += ">";
+        }
+        return depthStr;
+	}
+	
+	@SuppressWarnings("unused")
 	private static String padString(String str, int leng,char chr) {
         for (int i = str.length(); i < leng; i++)
             str += chr;
