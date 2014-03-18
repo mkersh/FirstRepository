@@ -29,51 +29,12 @@ public class Delicious {
 	 * @throws ParserConfigurationException 
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-		Delicious del = new Delicious();
-		del.parseXML(DELICIOUSFILE);
-	}
-	
-	protected void parseXML(String xmlFile) throws ParserConfigurationException, IOException, SAXException{
-		File fXmlFile = new File(DELICIOUSFILE);
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(fXmlFile);
+	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {	
+		ParseDelicious parser = new DeliciousParser1();
+		DeliciousVisitor visitor = new DeliciousVisitor1();
+		DeliciousPropertyFile prop = DeliciousPropertyFile.getInstance();
 		
-		XPathFactory factory = XPathFactory.newInstance();
-		XPath xpath = factory.newXPath();
-
-		Node book;
-		try {
-			NodeList bookList = (NodeList) xpath.evaluate("//book", doc, XPathConstants.NODESET);
-			for (int temp = 0; temp < bookList.getLength(); temp++) { 
-				book = bookList.item(temp);
-				Node title = (Node) xpath.evaluate("./title", book, XPathConstants.NODE); // I get null here.
-				System.out.println("\nCurrent Element :" + title.getTextContent());
-			}
-			
-			
-		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		parser.parse(prop.getProperty("DeliciousFile"),visitor);
 	}
 	
-	private static String convertToFileURL(String filename) {
-        String path = new File(filename).getAbsolutePath();
-        if (File.separatorChar != '/') {
-            path = path.replace(File.separatorChar, '/');
-        }
-
-        if (!path.startsWith("/")) {
-            path = "/" + path;
-        }
-        return "file:" + path;
-    }
-	
-		
-	protected void emailItem(String itemXML){
-		System.out.printf("email %s\n", EMAILADDRESS);
-	}
-
 }
