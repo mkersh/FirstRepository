@@ -3,6 +3,7 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/dbscripts"/>
+        <wb-resource deploy-path="/css" source-path="/bootstrap/css"/>
         <property name="context-root" value="DBServlet"/>
         <property name="java-output-path" value="/DBServlet/build/classes"/>
     </wb-module>
