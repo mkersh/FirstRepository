@@ -3,6 +3,8 @@
  */
 package com.mk.Delicious;
 
+import java.io.PrintWriter;
+
 /**
  * @author mark
  *
@@ -13,6 +15,7 @@ public class DeliciousVisitor1 implements DeliciousVisitor {
 	private final int MAXRETURN = 99999; // 0 = 1, 1=2 etc
 	private DeliciousPropertyFile prop = DeliciousPropertyFile.getInstance(); 
 	private SendEmail email = null;
+	private StringBuffer buffer = new StringBuffer();
 	
 	public DeliciousVisitor1(){
 		email = new SendEmail();
@@ -26,20 +29,44 @@ public class DeliciousVisitor1 implements DeliciousVisitor {
 		count += 1;
 		
 		// Create and send an email containing the details of the post
-		String from = prop.getProperty("FromEmailAddress");
-		String to = prop.getProperty("ToEmailAddress");
 		String title = modifyTags(bean.getTags()); // Add #log and unique tag
 		String body = bean.getDescription();
-		body += "\n\n" + bean.getHref();
-		body += "\n\n" + bean.getExtended(); 
-		body += "\n\nCreated in Delicious: " + bean.getTime();
-		email.post(from, to, title, body);
-		System.out.print(".");
+		body += "<br/><br/>" + modifyHref(bean.getHref());
+		if (!bean.getExtended().equals(""))
+			body += "<br/><br/>" + bean.getExtended(); 
+		body += "<br/><br/>Created in Delicious: " + bean.getTime();
+		
+		buffer.append(title);
+		buffer.append("<br/><br/>");
+		buffer.append(body);
+		buffer.append("<hr/>");
+		
+		
 		if (count > MAXRETURN)
 			return false; 
 		else
 			return true;
 	}
+	
+	public void finish(){
+		//String from = prop.getProperty("FromEmailAddress");
+		//String to = prop.getProperty("ToEmailAddress");
+		//email.post(from, to, "#Delicious #Export", buffer.toString());
+		//System.out.print(".");
+		PrintWriter out = null;
+		try{
+			out = new PrintWriter(URLHelper.expandHomeSymbol(prop.getProperty("OutputFile")));
+			out.println(buffer.toString());
+		}
+		catch (Exception ex){
+			ex.printStackTrace();
+		}
+		finally {
+			out.close();
+		}
+		
+	}
+
 	
 	/***
 	 * Convert the tags into #tag1 #tag2 format.
@@ -60,6 +87,11 @@ public class DeliciousVisitor1 implements DeliciousVisitor {
 		}
 		tags = "#log #DeliciousExport " + tags; 
 		return tags;
+	}
+	
+	private String modifyHref(String href){
+		String aTag = String.format("<a href=\"%s\">%s</a>", href, href);
+		return aTag;
 	}
 
 }

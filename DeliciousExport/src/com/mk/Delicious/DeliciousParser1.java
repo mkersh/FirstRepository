@@ -51,8 +51,8 @@ public class DeliciousParser1 implements ParseDelicious {
 				if (visitor.visitNode(bean) == false){
 					break; // Terminate the parsing
 				}
-				
 			}
+			visitor.finish();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
