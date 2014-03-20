@@ -2,13 +2,18 @@ package com.mk.Tests;
 
 import java.io.IOException;
 import java.sql.*;
+
 import org.w3c.dom.Node;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 /**
  * Servlet implementation class DBServlet
@@ -51,6 +56,7 @@ public class DBServlet extends HttpServlet {
 	}
 	
 	private String getEmployeesFromDatabase(){
+		Context ctx = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		Statement stmt = null;
@@ -61,7 +67,13 @@ public class DBServlet extends HttpServlet {
 
 	      //STEP 3: Open a connection
 	      System.out.println("Connecting to database...");
-	      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+	      ctx = new InitialContext();
+          DataSource ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/myDB");
+          conn = ds.getConnection();
+        
+          // The below was the original way I was doing it without using a DataSource
+          // Need to use a DataSource though because amounst other things they give you ConnectionPooling
+	      //conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
 	      //STEP 4: Execute a query
 	      System.out.println("Creating statement...");

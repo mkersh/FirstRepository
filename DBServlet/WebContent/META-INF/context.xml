@@ -1,0 +1,11 @@
+<Context>
+
+<Resource name="jdbc/myDB" auth="Container" type="javax.sql.DataSource"
+     username="root"
+     password=""
+     driverClassName="com.mysql.jdbc.Driver"
+     url="jdbc:mysql://localhost/test"
+     maxActive="15"
+     maxIdle="7"
+     validationQuery="Select 1" />
+</Context>
