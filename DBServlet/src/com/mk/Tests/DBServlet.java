@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import javax.transaction.UserTransaction;
 
 /**
  * Servlet implementation class DBServlet
@@ -70,7 +71,10 @@ public class DBServlet extends HttpServlet {
 	      ctx = new InitialContext();
           DataSource ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/myDB");
           conn = ds.getConnection();
-        
+          // Let's try and get a UserTransaction
+          UserTransaction txn = (UserTransaction)new InitialContext().lookup("java:comp/UserTransaction");
+          //txn.begin();
+          
           // The below was the original way I was doing it without using a DataSource
           // Need to use a DataSource though because amounst other things they give you ConnectionPooling
 	      //conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -78,18 +82,18 @@ public class DBServlet extends HttpServlet {
           // STEP 4b: Update the database
           String sql;
           // Next Line is IMPORTANT for enabling transactions that span multiple statements
-          conn.setAutoCommit(false);
+          //conn.setAutoCommit(false);
           Savepoint save1 = conn.setSavepoint();
           sql = "Update Employees set First_Name=? where ID=?"; //Original name Mustapha
 	      stmt = conn.prepareStatement(sql);
 	      stmt.setString(1, "11XXXX11Mark Kershaw");
 	      //stmt.setString(1, "Mustapha");
 	      stmt.setInt(2, 1);
-	      conn.setAutoCommit(false);
 	      stmt.executeUpdate();
 	      
-	      conn.rollback(save1); // Couldn't get this working for ages!!!!! TABLE was using wrong non-transactional ENGINE=MyISAM
+	      //conn.rollback(save1); // Couldn't get this working for ages!!!!! TABLE was using wrong non-transactional ENGINE=MyISAM
 	      //conn.commit();
+	      //txn.commit();
           
 	      //STEP 4: Execute a query
 	      System.out.println("Creating statement...");

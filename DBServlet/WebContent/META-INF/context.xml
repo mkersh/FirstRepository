@@ -8,4 +8,10 @@
      maxActive="15"
      maxIdle="7"
      validationQuery="Select 1" />
+     
+<Resource name="UserTransaction" auth="Container" type="javax.transaction.UserTransaction"
+factory="org.objectweb.jotm.UserTransactionFactory" jotm.timeout="60"/>
+<Manager pathname=""/>
+
+     
 </Context>
