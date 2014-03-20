@@ -75,13 +75,30 @@ public class DBServlet extends HttpServlet {
           // Need to use a DataSource though because amounst other things they give you ConnectionPooling
 	      //conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
+          // STEP 4b: Update the database
+          String sql;
+          // Next Line is IMPORTANT for enabling transactions that span multiple statements
+          conn.setAutoCommit(false);
+          Savepoint save1 = conn.setSavepoint();
+          sql = "Update Employees set First_Name=? where ID=?"; //Original name Mustapha
+	      stmt = conn.prepareStatement(sql);
+	      stmt.setString(1, "11XXXX11Mark Kershaw");
+	      //stmt.setString(1, "Mustapha");
+	      stmt.setInt(2, 1);
+	      conn.setAutoCommit(false);
+	      stmt.executeUpdate();
+	      
+	      conn.rollback(save1); // Couldn't get this working for ages!!!!! TABLE was using wrong non-transactional ENGINE=MyISAM
+	      //conn.commit();
+          
 	      //STEP 4: Execute a query
 	      System.out.println("Creating statement...");
-	      String sql;
+	      
 	      sql = "SELECT * FROM Employees";
 	      stmt = conn.prepareStatement(sql); // Always use PrepareStatement to avoid SQL Injection
-	      //stmt.setString(1, "some value");
 	      rs = stmt.executeQuery();
+	      
+	      
 
 	      //STEP 5: Extract data from result set
 	      xmlStr = XMLHelper.RSToXML(rs);

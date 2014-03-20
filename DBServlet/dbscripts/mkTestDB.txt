@@ -9,7 +9,7 @@ CREATE TABLE `Employees` (
   `Home_Address` VARCHAR(50) NOT NULL,
   `Home_Phone` VARCHAR(12) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;  -- Do not use MyISAM. It is not transactional
 
 INSERT INTO `Employees` (`First_Name`, `Last_Name`, `Position`, `Home_Address`, `Home_Phone`)
 VALUES
@@ -24,7 +24,7 @@ CREATE TABLE `Hours` (
   `ID` TINYINT(3) UNSIGNED NOT NULL,
   `Clock_In` DATETIME NOT NULL,
   `Clock_Out` DATETIME NOT NULL
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 INSERT INTO `Hours`
 VALUES ('1', '2005-08-08 07:00:42', '2005-08-08 17:01:36'),
