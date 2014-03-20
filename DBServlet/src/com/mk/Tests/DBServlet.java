@@ -59,7 +59,7 @@ public class DBServlet extends HttpServlet {
 		Context ctx = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		String xmlStr = null;
 		try{
 	      //STEP 2: Register JDBC driver
@@ -77,10 +77,11 @@ public class DBServlet extends HttpServlet {
 
 	      //STEP 4: Execute a query
 	      System.out.println("Creating statement...");
-	      stmt = conn.createStatement();
 	      String sql;
 	      sql = "SELECT * FROM Employees";
-	      rs = stmt.executeQuery(sql);
+	      stmt = conn.prepareStatement(sql); // Always use PrepareStatement to avoid SQL Injection
+	      //stmt.setString(1, "some value");
+	      rs = stmt.executeQuery();
 
 	      //STEP 5: Extract data from result set
 	      xmlStr = XMLHelper.RSToXML(rs);
