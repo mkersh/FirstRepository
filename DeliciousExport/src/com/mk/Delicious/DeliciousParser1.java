@@ -16,6 +16,18 @@ import org.w3c.dom.NodeList;
 
 public class DeliciousParser1 implements ParseDelicious {
 
+	// This next property will be injected by the DI container (ie. Spring) but
+	// for this component you can not use in the constructor or any init-method
+	private Registry registry;
+	
+	public Registry getRegistry() {
+		return registry;
+	}
+
+	public void setRegistry(Registry registry) {
+		this.registry = registry;
+	}
+
 	@Override
 	public void parse(String filePath, DeliciousVisitor visitor) {
 		

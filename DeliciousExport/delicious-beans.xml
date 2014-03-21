@@ -7,17 +7,28 @@
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
+<!-- W A R N I N G 
+You can only reference Registry and use in the setup of a bean when scope<>singleton 
+In singleton's (the default) you can not use as part of the setup of the bean.
+You can still inject into a Singleton bean but only use after the DI container has
+fully created the bean.
+-->
 <bean name="Registry" class="com.mk.Delicious.RegistrySpring">
 </bean>
 
-<bean name="Delicious" class="com.mk.Delicious.Delicious">
+<!--  What I am trying to do does not really work. Injecting the registry into an object only
+works when scope="prototype". When it is a singleton Spring tries to instantiate immediately and then the 
+Registry is not ready to be used. See above WARNING for more info. -->
+<bean name="Delicious" class="com.mk.Delicious.Delicious" init-method="init" scope="prototype">
 	<property name="registry" ref="Registry"/>
 </bean>
 
 <bean name="ParseDelicious" class="com.mk.Delicious.DeliciousParser1">
+	<property name="registry" ref="Registry"/>
 </bean>
 
 <bean name="DeliciousVisitor" class="com.mk.Delicious.DeliciousVisitor1">
+	<property name="registry" ref="Registry"/>
 </bean>
 
 </beans>

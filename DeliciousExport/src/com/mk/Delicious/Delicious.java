@@ -12,6 +12,7 @@ public class Delicious {
 	private DeliciousVisitor visitor;
 	
 	// Tried to pass Registry as a constructor parameter but had problems!!
+	// Using an init function instead
 	public Delicious(){
 	}
 	
@@ -35,7 +36,8 @@ public class Delicious {
 		
 		// Next line creates an instance of this class and injects objects into parser and visitor properties
 		Delicious del = (Delicious)registry.getBean("Delicious");
-		del.init();
+		// init method should now get called by Spring
+		//del.init();
 		del.parseDeliciousXML();
 		
 		registry.shutdown();

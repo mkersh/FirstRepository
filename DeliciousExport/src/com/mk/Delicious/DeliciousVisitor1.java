@@ -11,6 +11,16 @@ import java.io.PrintWriter;
  */
 public class DeliciousVisitor1 implements DeliciousVisitor {
 	
+	private Registry registry;
+	
+	public Registry getRegistry() {
+		return registry;
+	}
+
+	public void setRegistry(Registry registry) {
+		this.registry = registry;
+	}
+
 	private int count = 0;
 	private final int MAXRETURN = 4; // 0 = 1, 1=2 etc
 	private DeliciousPropertyFile prop = DeliciousPropertyFile.getInstance(); 
