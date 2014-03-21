@@ -12,13 +12,11 @@ import java.io.PrintWriter;
 public class DeliciousVisitor1 implements DeliciousVisitor {
 	
 	private int count = 0;
-	private final int MAXRETURN = 99999; // 0 = 1, 1=2 etc
+	private final int MAXRETURN = 4; // 0 = 1, 1=2 etc
 	private DeliciousPropertyFile prop = DeliciousPropertyFile.getInstance(); 
-	private SendEmail email = null;
 	private StringBuffer buffer = new StringBuffer();
 	
 	public DeliciousVisitor1(){
-		email = new SendEmail();
 	}
 
 	/* (non-Javadoc)

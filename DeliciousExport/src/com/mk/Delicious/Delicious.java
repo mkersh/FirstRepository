@@ -15,11 +15,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 
+import org.springframework.context.*;
+import org.springframework.context.support.*;
+
 public class Delicious {
 	
-	static final String EMAILADDRESS = "kershaw.mark@gmail.com";
-	static final String DELICIOUSFILE = "/home/mark/delicious.xml";
-	private Hashtable tags;
+	private ApplicationContext ctx = null;
+	private ParseDelicious parser;
+	private DeliciousVisitor visitor;
+	
+	public Delicious(){
+		ctx = new FileSystemXmlApplicationContext("file:/home/mark/git/FirstRepository/DeliciousExport/delicious-beans.xml");
+	}
 
 	/***
 	 * The aim of this program is to parse the delicious.xml file and send
@@ -30,8 +37,16 @@ public class Delicious {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {	
-		ParseDelicious parser = new DeliciousParser1();
-		DeliciousVisitor visitor = new DeliciousVisitor1();
+		Delicious del = new Delicious();
+		del.parseDeliciousXML();
+	}
+	
+	/***
+	 * Going introduce Spring to DI implementation instances of ParseDelicious and DeliciousVisitor to use
+	 */
+	public void parseDeliciousXML(){
+		parser = (ParseDelicious) ctx.getBean("ParseDelicious");
+		visitor = (DeliciousVisitor) ctx.getBean("DeliciousVisitor");
 		DeliciousPropertyFile prop = DeliciousPropertyFile.getInstance();
 		
 		parser.parse(prop.getProperty("DeliciousFile"),visitor);
