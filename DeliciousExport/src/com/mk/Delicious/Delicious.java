@@ -3,16 +3,22 @@ import javax.xml.parsers.*;
 import org.xml.sax.SAXException;
 import java.io.IOException;
 
-import org.springframework.context.*;
-import org.springframework.context.support.*;
-
 public class Delicious {
 	
 	// Using Spring to inject into the following properties
+	private Registry registry;
+	
 	private ParseDelicious parser;
 	private DeliciousVisitor visitor;
 	
+	// Tried to pass Registry as a constructor parameter but had problems!!
 	public Delicious(){
+	}
+	
+	public void init(){
+		// use the registry to get the parser and visitor beans
+		parser = (ParseDelicious)registry.getBean("ParseDelicious");
+		visitor = (DeliciousVisitor)registry.getBean("DeliciousVisitor");
 	}
 
 	/***
@@ -24,16 +30,25 @@ public class Delicious {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {	
-		ApplicationContext ctx = new FileSystemXmlApplicationContext("file:/home/mark/git/FirstRepository/DeliciousExport/delicious-beans.xml");
+		Registry registry = new RegistrySpring();
+		registry.initFromFile("file:/home/mark/git/FirstRepository/DeliciousExport/delicious-beans.xml");
 		
 		// Next line creates an instance of this class and injects objects into parser and visitor properties
-		Delicious del = (Delicious)ctx.getBean("Delicious");
+		Delicious del = (Delicious)registry.getBean("Delicious");
+		del.init();
 		del.parseDeliciousXML();
-		// Next line is a bit messy. If not included eclipse complains that you haven't closed a resource
-		// Probably best typing ctx as FileSystemXmlApplicationContext to avoid the need to cast
-		((FileSystemXmlApplicationContext) ctx).close();
+		
+		registry.shutdown();
 	}
 	
+	public Registry getRegistry() {
+		return registry;
+	}
+
+	public void setRegistry(Registry registry) {
+		this.registry = registry;
+	}
+
 	public ParseDelicious getParser() {
 		return parser;
 	}
