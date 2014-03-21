@@ -7,6 +7,11 @@
     http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
+<bean name="Delicious" class="com.mk.Delicious.Delicious">
+	<property name="parser" ref="ParseDelicious"/>
+	<property name="visitor" ref="DeliciousVisitor"/>
+</bean>
+
 <bean name="ParseDelicious" class="com.mk.Delicious.DeliciousParser1">
 </bean>
 
