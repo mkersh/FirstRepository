@@ -26,8 +26,11 @@ public class Delicious {
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {	
 		ApplicationContext ctx = new FileSystemXmlApplicationContext("file:/home/mark/git/FirstRepository/DeliciousExport/delicious-beans.xml");
 		
+		// Next line creates an instance of this class and injects objects into parser and visitor properties
 		Delicious del = (Delicious)ctx.getBean("Delicious");
 		del.parseDeliciousXML();
+		// Next line is a bit messy. If not included eclipse complains that you haven't closed a resource
+		// Probably best typing ctx as FileSystemXmlApplicationContext to avoid the need to cast
 		((FileSystemXmlApplicationContext) ctx).close();
 	}
 	
